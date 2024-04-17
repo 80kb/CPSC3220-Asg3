@@ -55,7 +55,7 @@
 #define N_BLOCKS 256
 #define BLOCK_SIZE 128
 #define BLOCK_SIZE_AS_POWER_OF_2 7
-#define N_BYTES (256*128)
+#define N_BYTES (256*BLOCK_SIZE)
 #define MAX_FILE_SIZE (252*128)
 #define FILENAME_LENGTH 9
 #define FIRST_VALID_FD 1
@@ -81,11 +81,6 @@
 #define FALSE 0
 
 
-/* storage for file system */
-
-char storage[N_BYTES];
-
-
 /* struct declarations and pointers */
 
 struct file_block{
@@ -99,10 +94,6 @@ struct directory_entry{
   unsigned short byte_offset;
   char name[FILENAME_LENGTH + 1];
 };
-
-struct file_block *blocks;
-struct directory_entry *directory;
-unsigned char *file_allocation_table;
 
 
 /* public interface */
