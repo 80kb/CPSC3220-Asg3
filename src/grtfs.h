@@ -55,9 +55,9 @@
 #define N_BLOCKS 256
 #define BLOCK_SIZE 128
 #define BLOCK_SIZE_AS_POWER_OF_2 7
-#define N_BYTES (256*BLOCK_SIZE)
+#define N_BYTES (256*128)
 #define MAX_FILE_SIZE (252*128)
-#define FILENAME_LENGTH 9
+#define FILENAME_LENGTH 8
 #define FIRST_VALID_FD 1
 #define FIRST_VALID_BLOCK 4
 
@@ -81,6 +81,11 @@
 #define FALSE 0
 
 
+/* read and write access */
+
+#define READ_ACCESS 1
+#define WRITE_ACCESS 2
+
 /* struct declarations and pointers */
 
 struct file_block{
@@ -93,6 +98,7 @@ struct directory_entry{
   unsigned short size;
   unsigned short byte_offset;
   char name[FILENAME_LENGTH + 1];
+  unsigned char access;
 };
 
 
@@ -126,6 +132,14 @@ unsigned int grtfs_write(  unsigned int file_descriptor,
 unsigned int grtfs_close(  unsigned int file_descriptor );
 
 unsigned int grtfs_delete( unsigned int file_descriptor );
+
+unsigned int file_is_readable( char* name );
+
+unsigned int file_is_writable( char* name );
+
+void make_readable( char* name );
+
+void make_writable( char* name );
 
 
 /* helper functions */

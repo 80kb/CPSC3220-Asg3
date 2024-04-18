@@ -223,6 +223,7 @@ unsigned int grtfs_create( char *name ){
         directory[file_descriptor].first_block = 0;
         directory[file_descriptor].size = 0;
         directory[file_descriptor].byte_offset = 0;
+        directory[file_descriptor].access = 3; // 0011 : default readable and writable
         strcpy( directory[file_descriptor].name, name );
         return( file_descriptor );
 }
@@ -398,6 +399,7 @@ unsigned int grtfs_delete( unsigned int file_descriptor ){
  *   (1) the file descriptor is in range
  *   (2) the directory entry is open
  *   (3) the file has allocated file blocks
+ *   (4) file is readable
  *
  * postconditions:
  *   (1) the buffer contains bytes transferred from file blocks
@@ -415,6 +417,11 @@ unsigned int grtfs_delete( unsigned int file_descriptor ){
 unsigned int grtfs_read( unsigned int file_descriptor,
                 char *buffer,
                 unsigned int byte_count ){
+        if( file_is_readable(directory[file_descriptor].name) == FALSE ){
+                printf("*** Read access denied\n");
+                return( FALSE );
+        }
+
         unsigned short byte_offset = directory[file_descriptor].byte_offset;
         unsigned char  block_index = directory[file_descriptor].first_block;
         unsigned int   bytes_read  = 0;
@@ -463,6 +470,7 @@ unsigned int grtfs_read( unsigned int file_descriptor,
  * preconditions:
  *   (1) the file descriptor is in range
  *   (2) the directory entry is open
+ *   (3) file is writable
  *
  * postconditions:
  *   (1) the file contains bytes transferred from the buffer
@@ -496,6 +504,11 @@ void append_block_at(unsigned char* block_index){
 unsigned int grtfs_write( unsigned int file_descriptor,
                 char *buffer,
                 unsigned int byte_count ){
+        if( file_is_writable(directory[file_descriptor].name) == FALSE ){
+                printf("*** Write access denied\n");
+                return( FALSE );
+        }
+
         unsigned short byte_offset   = directory[file_descriptor].byte_offset;
         unsigned char  block_index   = directory[file_descriptor].first_block;
         unsigned int   bytes_written = 0;
@@ -525,3 +538,26 @@ unsigned int grtfs_write( unsigned int file_descriptor,
         return( bytes_written );
 }
 
+unsigned int file_is_readable(char* filename){
+        unsigned int fd = grtfs_map_name_to_fd(filename);
+        if( directory[fd].access & READ_ACCESS ) return( TRUE );
+        return( FALSE );
+}
+
+unsigned int file_is_writable(char* filename){
+        unsigned int fd = grtfs_map_name_to_fd(filename);
+        if( directory[fd].access & WRITE_ACCESS ) return( TRUE );
+        return( FALSE );
+}
+
+// toggles read access
+void make_readable(char* filename){
+        unsigned int fd = grtfs_map_name_to_fd(filename);
+        directory[fd].access ^= READ_ACCESS;
+}
+
+// toggles write access
+void make_writable(char* filename){
+        unsigned int fd = grtfs_map_name_to_fd(filename);
+        directory[fd].access ^= WRITE_ACCESS;
+}
