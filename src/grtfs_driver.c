@@ -3,7 +3,7 @@
 #include "grtfs.h"
 
 int main(){
-        unsigned int fd[20];
+        unsigned int fd[32];
         char buffer1[1024], buffer2[1024], buffer3[1024];
         unsigned int length1, length2, count1, count2, count3;
 
@@ -89,7 +89,23 @@ int main(){
         fd[13] = grtfs_create( "file14" );
         fd[14] = grtfs_create( "file15" );
         fd[15] = grtfs_create( "file16" );
-        printf( "fd for creating a sixteenth file - %d\n", fd[15] );
+        fd[16] = grtfs_create( "file17" );
+        fd[17] = grtfs_create( "file18" );
+        fd[18] = grtfs_create( "file19" );
+        fd[19] = grtfs_create( "file20" );
+        fd[20] = grtfs_create( "file21" );
+        fd[21] = grtfs_create( "file22" );
+        fd[22] = grtfs_create( "file23" );
+        fd[23] = grtfs_create( "file24" );
+        fd[24] = grtfs_create( "file25" );
+        fd[25] = grtfs_create( "file26" );
+        fd[26] = grtfs_create( "file27" );
+        fd[27] = grtfs_create( "file28" );
+        fd[28] = grtfs_create( "file29" );
+        fd[29] = grtfs_create( "file30" );
+        fd[30] = grtfs_create( "file31" );
+        fd[31] = grtfs_create( "file32" );
+        printf( "fd for creating a thirty-second file - %d\n", fd[31] );
 
         grtfs_list_directory();
 
@@ -106,6 +122,7 @@ int main(){
 
         grtfs_delete( fd[6] );
         grtfs_delete( fd[7] );
+        grtfs_delete( fd[30] );
 
         grtfs_list_directory();
 

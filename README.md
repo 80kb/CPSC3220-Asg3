@@ -9,7 +9,7 @@ File system consists of three sections: directory entries, file allocation table
 | 0x00   | byte     | File status*                             | status      |
 | 0x01   | byte     | First index in the file allocation table | first_block |
 | 0x02   | uint16   | Size of the file                         | size        |
-| 0x03   | uint16   | Offset to start of file data             | byte_offset |
+| 0x03   | uint16   | Stream position for read/write           | byte_offset |
 | 0x04   | char[12] | File name (null-terminated)              | name        |
 
 \* 0x00 = UNUSED, 0x01 = CLOSED, 0x02 = OPEN

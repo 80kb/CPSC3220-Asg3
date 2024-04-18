@@ -43,6 +43,8 @@
  * |        | block  |        | offset |                   |
  * +--------+--------+--------+--------+--------------...--+
  */
+#ifndef __GRTFS_H__
+#define __GRTFS_H__
 
 #include <stdio.h>
 #include <string.h>
@@ -51,15 +53,15 @@
 
 /* defined sizes and limits */
 
-#define N_DIRECTORY_ENTRIES 16
-#define N_BLOCKS 256
+#define N_DIRECTORY_ENTRIES 32
+#define N_BLOCKS 4096
 #define BLOCK_SIZE 128
 #define BLOCK_SIZE_AS_POWER_OF_2 7
-#define N_BYTES (256*128)
-#define MAX_FILE_SIZE (252*128)
-#define FILENAME_LENGTH 8
+#define N_BYTES (N_BLOCKS*BLOCK_SIZE)
+#define MAX_FILE_SIZE ((N_BLOCKS-8)*BLOCK_SIZE)
+#define FILENAME_LENGTH 16
 #define FIRST_VALID_FD 1
-#define FIRST_VALID_BLOCK 4
+#define FIRST_VALID_BLOCK 8
 
 
 /* directory entry status */
@@ -152,3 +154,5 @@ unsigned int grtfs_size( unsigned int file_descriptor );
 unsigned int grtfs_new_directory_entry();
 unsigned int grtfs_map_name_to_fd( char *name );
 unsigned int grtfs_new_block();
+
+#endif //__GRTFS_H__

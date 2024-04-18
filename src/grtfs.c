@@ -96,7 +96,7 @@ void grtfs_init(){
         unsigned int i;
         directory = (struct directory_entry *) storage;
         blocks = (struct file_block *) storage;
-        file_allocation_table = (unsigned char *) &storage[256];
+        file_allocation_table = (unsigned char *) &storage[N_BLOCKS];
         for( i = 0; i < N_BYTES; i++ ){
                 storage[i] = 0;
         }
@@ -223,8 +223,8 @@ unsigned int grtfs_create( char *name ){
         directory[file_descriptor].first_block = 0;
         directory[file_descriptor].size = 0;
         directory[file_descriptor].byte_offset = 0;
-        directory[file_descriptor].access = 3; // 0011 : default readable and writable
         strcpy( directory[file_descriptor].name, name );
+        directory[file_descriptor].access = 3; // 0011 : default readable and writable
         return( file_descriptor );
 }
 
